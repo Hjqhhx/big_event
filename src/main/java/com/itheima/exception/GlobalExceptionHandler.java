@@ -13,6 +13,6 @@ public class GlobalExceptionHandler {
     public Result handleException(ConstraintViolationException e) {
 
         e.printStackTrace();
-        return Result.error(StrUtil.isEmptyIfStr(e.getMessage()) ? e.getMessage() : "操作失败");
+        return Result.error(StrUtil.isEmptyIfStr(e.getMessage()) ? "账号或密码长度不满足要求" : "操作失败");
     }
 }

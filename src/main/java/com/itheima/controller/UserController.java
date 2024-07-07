@@ -1,9 +1,11 @@
 package com.itheima.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.itheima.pojo.Result;
 import com.itheima.pojo.User;
 import com.itheima.service.UserService;
+import com.itheima.utils.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
@@ -13,6 +15,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -24,7 +29,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "注册请求")
+    @Operation(summary = "用户注册接口")
     @PostMapping("/register")
     //@Pattern(regexp = "^$\\S{5,16}")这个是spring validation 提供的校验参数的，里面是正则表达式
     public Result register(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$") String password) {
@@ -40,5 +45,24 @@ public class UserController {
             //占用，返回提示信息
             return Result.error("该用户名已存在");
         }
+    }
+
+    @Operation(summary = "用户登录接口")
+    @PostMapping("/login")
+    public Result login(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$") String password) {
+
+        User loginUser = userService.findByUserName(username);
+        if (ObjectUtil.isEmpty(loginUser)) return Result.error("用户不存在，请注册");
+
+        if (loginUser.getPassword().equals(DigestUtil.md5Hex(password))) {
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("id", loginUser.getId());
+            claims.put("username", loginUser.getUsername());
+            String token = JwtUtil.genToken(claims);
+            return Result.success(token);
+        }
+
+
+        return Result.error("密码错误，请重新输入");
     }
 }
