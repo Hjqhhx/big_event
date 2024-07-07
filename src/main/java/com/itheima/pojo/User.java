@@ -1,9 +1,15 @@
 package com.itheima.pojo;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@Data
 public class User {
     private Integer id;//主键ID
     private String username;//用户名
