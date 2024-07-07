@@ -8,8 +8,7 @@ spring:
 #日志级别
 logging:
   level:
-    com: debug
-
+    com: info
 # springdoc-openapi项目配置
 springdoc:
   swagger-ui:
