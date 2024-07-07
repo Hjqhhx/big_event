@@ -1,14 +1,16 @@
 package com.itheima.interceptors;
 
-import com.itheima.pojo.Result;
 import com.itheima.utils.JwtUtil;
+import com.itheima.utils.ThreadLocalUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Map;
 
+@Slf4j
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
@@ -17,7 +19,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader("Authorization");
         try {
-            Map<String, Object> stringObjectMap = JwtUtil.parseToken(token);
+            Map<String, Object> clams = JwtUtil.parseToken(token);
+            //调用ThreadLocalUtil工具类，向ThreadLocal中存入token中的载荷
+            ThreadLocalUtil.set(clams);
             //放行
             return true;
 
@@ -26,7 +30,14 @@ public class LoginInterceptor implements HandlerInterceptor {
             //不放行
             return false;
         }
+    }
 
+    //为了防止内存泄漏，在程序结束的时候，将ThreadLocal中的数据清除
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex){
+
+        log.info("正在清理ThreadLocal中的数据...");
+        ThreadLocalUtil.remove();
     }
 }
 
