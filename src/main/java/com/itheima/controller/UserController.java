@@ -1,6 +1,7 @@
 package com.itheima.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.itheima.pojo.Result;
 import com.itheima.pojo.User;
@@ -137,6 +138,11 @@ public class UserController {
     @Operation(summary = "跟新用户密码接口")
     public Result updateUserPwd(@RequestBody Map<String, String> params) {
 
+        //获取参数信息
+        String oldPwd = params.get("old_pwd");
+        String newPwd = params.get("new_pwd");
+        String rePwd = params.get("re_pwd");
+
         //从线程中获取当前用户的信息
         Map<String, Object> clams = ThreadLocalUtil.get();
         String username = (String) clams.get("username");
@@ -145,12 +151,20 @@ public class UserController {
         //将原始密码与原来的密码进行对比
         User user = userService.findByUserName(username);
         String password = user.getPassword();
-        String oldPwd = params.get("old_pwd");
+
+        //加个非空判断
+        if (StrUtil.isBlankIfStr(oldPwd)) return Result.error("原密码不能为空");
+
+        //密码校验
         if (!password.equals(DigestUtil.md5Hex(oldPwd))) {
             return Result.error("原密码不对");
         }
 
-        userService.updateUserPwd(params,id);
+        if (!rePwd.equals(newPwd)) {
+            return Result.error("两次填写密码不一致");
+        }
+
+        userService.updateUserPwd(params, id);
 
         return Result.success();
     }

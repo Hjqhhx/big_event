@@ -1,6 +1,8 @@
 package com.itheima.mapper;
 
 import cn.hutool.core.date.DateTime;
+import com.itheima.annocation.AutoFill;
+import com.itheima.enumeration.OperationType;
 import com.itheima.pojo.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,6 +13,7 @@ import org.apache.ibatis.annotations.Update;
 public interface UserMapper {
     /**
      * 根据用户名查询用户
+     *
      * @param username 用户名
      * @return 返回值
      */
@@ -20,6 +23,7 @@ public interface UserMapper {
 
     /**
      * 用户注册，向数据库表中添加新用户
+     *
      * @param username
      * @param md5Password
      * @param createTime
@@ -31,7 +35,9 @@ public interface UserMapper {
 
     /**
      * 跟新用户信息
+     *
      * @param user
      */
+    @AutoFill(value = OperationType.UPDATE) //标记该方法是更新操作，需要进行Before赋值
     void updateById(User user);
 }

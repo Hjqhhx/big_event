@@ -59,7 +59,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserInfo(User user) {
 
-        user.setUpdateTime(LocalDateTime.now());
         userMapper.updateById(user);
     }
 
@@ -72,13 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserAvater(String avatarUrl) {
 
-        Map<String, Object> clams = ThreadLocalUtil.get();
-        Integer id = (Integer) clams.get("id");
-        User user = new User();
-        user.setId(id);
-        user.setUserPic(avatarUrl);
-        user.setUpdateTime(LocalDateTime.now());
-
+        User user = User.builder().userPic(avatarUrl).build();
         userMapper.updateById(user);
     }
 
@@ -90,13 +83,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserPwd(Map<String, String> params, Integer id) {
 
-
-        User user = new User();
-        user.setId(id);
-        user.setPassword(DigestUtil.md5Hex(params.get("new_pwd")));
-        user.setUpdateTime(LocalDateTime.now());
+        User user = User.builder().password(DigestUtil.md5Hex(params.get("new_pwd"))).build();
         userMapper.updateById(user);
-
 
     }
 }
