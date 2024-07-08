@@ -30,3 +30,11 @@ springdoc:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+
+# Alioss配置
+aliyun:
+  oss:
+    access-key-id: LTAI5t7MqF74rAfGtzw5LJxW
+    ENDPOINT: https://oss-cn-hangzhou.aliyuncs.com
+    bucket-name: web-mytails01
+    secret-access-key: qJoHgzHdh7ElwbSANjpgRLkPtylpDf
