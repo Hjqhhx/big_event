@@ -22,5 +22,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/webjars/**", "/v3/api-docs/**", "swagger-resources/**", "/doc.html");//放行knife4j页面
     }
 
-
 }

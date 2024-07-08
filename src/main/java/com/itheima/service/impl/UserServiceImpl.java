@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
@@ -41,9 +43,22 @@ public class UserServiceImpl implements UserService {
         String md5Password = DigestUtil.md5Hex(password); //使用糊涂包中的方法进行md5加密，也可以使用自己导入的工具包
         log.info("md5Password {}", md5Password);
 
-        DateTime createTime = DateTime.now();
+        DateTime createTime = DateTime.now(); //糊涂包获取当前时间
         DateTime updateTime = DateTime.now();
 
         userMapper.addNewUser(username, md5Password, createTime, updateTime);
+    }
+
+    /**
+     * 跟新用户信息
+     *
+     * @param user
+     */
+    @Override
+    public void updateById(User user) {
+
+        user.setUpdateTime(LocalDateTime.now());
+        log.info("当前用户ID：{}", user.getId());
+        userMapper.updateById(user);
     }
 }

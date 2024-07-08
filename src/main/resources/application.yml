@@ -8,8 +8,12 @@ spring:
 #日志级别
 logging:
   level:
-    com: info
-# springdoc-openapi项目配置
+    com:
+      itheima:
+        mapper: debug
+
+
+# springdoc-openapi（knife4j）项目配置
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

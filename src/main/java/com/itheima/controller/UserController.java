@@ -13,10 +13,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -98,4 +95,20 @@ public class UserController {
 
         return Result.success(user);
     }
+
+
+    /**
+     * 跟新用户信息
+     * @param user 用实体类接收前端参数，因为前端为json格式
+     * @return 返回信息
+     */
+    @PutMapping("/update")
+    @Operation(summary = "跟新用户信息接口")
+    public Result update(@RequestBody User user) {
+
+        userService.updateById(user);
+        return Result.success();
+    }
+
+
 }

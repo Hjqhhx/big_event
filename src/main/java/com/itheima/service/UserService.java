@@ -20,4 +20,10 @@ public interface UserService {
      * @param password 密码
      */
     void register(String username, String password);
+
+    /**
+     * 跟新用户信息
+     * @param user
+     */
+    void updateById(User user);
 }
