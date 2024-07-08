@@ -50,4 +50,35 @@ public class ArticleController {
 
         return Result.success(pageBean);
     }
+
+    @GetMapping("/detail")
+    @Operation(summary = "根据ID查询文章详情")
+    public Result<Article> findArticleDetailById(Integer id) {
+
+        Article article = articleService.findArticleDetailById(id);
+
+        return Result.success(article);
+    }
+
+    /**
+     * 根据ID修改文章信息
+     *
+     * @param article
+     * @return
+     */
+    @PutMapping
+    @Operation(summary = "根据ID修改文章")
+    public Result updateArticleInfoById(@RequestBody @Validated Article article) {
+
+        articleService.updateArticleInfoById(article);
+        return Result.success();
+    }
+
+    @DeleteMapping
+    @Operation(summary = "根据ID删除文章")
+    public Result deleteArticleById(Integer id) {
+
+        articleService.deleteArticleById(id);
+        return Result.success();
+    }
 }

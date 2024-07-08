@@ -59,4 +59,40 @@ public class ArticleServiceImpl implements ArticleService {
 
         return pageBean;
     }
+
+    /**
+     * 根据id查询文章详情
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Article findArticleDetailById(Integer id) {
+
+        return articleMapper.selectArticleDetailById(id);
+
+    }
+
+    /**
+     * 根据ID修改文章信息
+     *
+     * @param article
+     */
+    @Override
+    public void updateArticleInfoById(Article article) {
+
+        articleMapper.updateArticleInfoById(article);
+
+    }
+
+    /**
+     * 根据Id删除文章
+     *
+     * @param id
+     */
+    @Override
+    public void deleteArticleById(Integer id) {
+
+        articleMapper.deleteArticleById(id);
+    }
 }

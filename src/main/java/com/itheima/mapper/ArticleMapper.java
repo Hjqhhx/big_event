@@ -4,9 +4,7 @@ import com.itheima.annocation.AutoFill;
 import com.itheima.enumeration.OperationType;
 import com.itheima.pojo.Article;
 import com.itheima.pojo.PageQuery;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -30,4 +28,24 @@ public interface ArticleMapper {
      * @return
      */
     List<Article> listQuery(PageQuery pageQuery);
+
+    /**
+     * 根据id查询文章详情
+     *
+     * @param id
+     * @return
+     */
+    @Select("select * from article where id =#{id}")
+    Article selectArticleDetailById(Integer id);
+
+    /**
+     * 根据ID修改文章信息
+     *
+     * @param article
+     */
+    @AutoFill(OperationType.UPDATE)
+    void updateArticleInfoById(Article article);
+
+    @Delete("delete from article where id =#{id}")
+    void deleteArticleById(Integer id);
 }
