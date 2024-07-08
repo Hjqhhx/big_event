@@ -90,11 +90,19 @@ public class AutoFillAspect {
             try {
                 //用反射获取entry实体类中的名为setUpdateTime，参数类型为LocalDateTime的方法
                 Method setUpdateTime = entry.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class);
-                //获取设置id的方法
-                Method setId = entry.getClass().getDeclaredMethod("setId", Integer.class);
                 //赋值
                 setUpdateTime.invoke(entry, time);
-                setId.invoke(entry, id);
+
+                // 通过反射获取 id 字段的当前值
+                Method getId = entry.getClass().getDeclaredMethod("getId");
+                Integer currentId = (Integer) getId.invoke(entry);
+                if (currentId == null) {
+                    //获取设置id的方法
+                    Method setId = entry.getClass().getDeclaredMethod("setId", Integer.class);
+                    //设置id的值
+                    setId.invoke(entry, id);
+                }
+
 
             } catch (Exception e) {
                 e.printStackTrace();

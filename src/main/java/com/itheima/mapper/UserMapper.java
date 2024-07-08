@@ -7,7 +7,6 @@ import com.itheima.pojo.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserMapper {
@@ -34,7 +33,7 @@ public interface UserMapper {
     void addNewUser(String username, String md5Password, DateTime createTime, DateTime updateTime);
 
     /**
-     * 跟新用户信息
+     * 更新用户信息
      *
      * @param user
      */
