@@ -99,15 +99,31 @@ public class UserController {
 
     /**
      * 跟新用户信息
+     *
      * @param user 用实体类接收前端参数，因为前端为json格式
      * @return 返回信息
      */
     @PutMapping("/update")
     @Operation(summary = "跟新用户信息接口")
-    public Result update(@RequestBody User user) {
+    public Result updateUserInfo(@RequestBody User user) {
 
-        userService.updateById(user);
+        userService.updateUserInfo(user);
         return Result.success();
+    }
+
+    /**
+     * 跟新用户头像
+     * @param avatarUrl
+     * @return
+     */
+    @PatchMapping("/updateAvatar")
+    @Operation(summary = "跟新用户头像接口")
+    public Result updateUserAvatar(@RequestParam String avatarUrl) {
+
+        userService.updateUserAvater(avatarUrl);
+
+        return Result.success();
+
     }
 
 

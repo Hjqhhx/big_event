@@ -25,5 +25,12 @@ public interface UserService {
      * 跟新用户信息
      * @param user
      */
-    void updateById(User user);
+    void updateUserInfo(User user);
+
+    /**
+     * 跟新用户头像
+     * @param avatarUrl
+     * @return
+     */
+    void updateUserAvater(String avatarUrl);
 }

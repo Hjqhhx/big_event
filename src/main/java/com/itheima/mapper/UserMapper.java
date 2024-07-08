@@ -33,6 +33,5 @@ public interface UserMapper {
      * 跟新用户信息
      * @param user
      */
-    @Update("update user set nickname = #{nickname},email=#{email},update_time=#{updateTime} where id = #{id}")
     void updateById(User user);
 }
