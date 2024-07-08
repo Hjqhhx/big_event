@@ -13,6 +13,6 @@ public class GlobalExceptionHandler {
     public Result handleException(Exception e) {
 
         e.printStackTrace();
-        return Result.error(StrUtil.isEmptyIfStr(e.getMessage()) ? e.getMessage() : "操作失败");
+        return Result.error(StrUtil.isNotEmpty(e.getMessage()) ? e.getMessage() : "操作失败");
     }
 }

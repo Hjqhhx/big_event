@@ -1,14 +1,16 @@
 package com.itheima.controller;
 
+import com.itheima.pojo.Article;
 import com.itheima.pojo.Result;
+import com.itheima.service.ArticleService;
 import com.itheima.utils.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -17,6 +19,17 @@ import java.util.Map;
 @Slf4j
 @Tag(name = "文章相关接口")
 public class ArticleController {
+
+    @Autowired
+    private ArticleService articleService;
+
+    @PostMapping
+    @Operation(summary = "新增文章")
+    public Result insertArticle(@RequestBody @Validated Article article) {
+
+        articleService.insertArticle(article);
+        return Result.success();
+    }
 
     @GetMapping("/list")
     public Result<String> list(@RequestHeader(name = "Authorization") String token, HttpServletResponse response) {
