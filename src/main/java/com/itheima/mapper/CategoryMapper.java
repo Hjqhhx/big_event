@@ -3,10 +3,8 @@ package com.itheima.mapper;
 import com.itheima.annocation.AutoFill;
 import com.itheima.enumeration.OperationType;
 import com.itheima.pojo.Category;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,4 +51,12 @@ public interface CategoryMapper {
             " set category_name = #{categoryName},category_alias=#{categoryAlias},update_time=#{updateTime}" +
             " where id=#{id}")
     void updateCategoryById(Category category);
+
+    /**
+     * 根据文章id删除文章分类
+     *
+     * @param id
+     */
+    @Delete("delete from category where id =#{id}")
+    void deleteCategoryById(Integer id);
 }

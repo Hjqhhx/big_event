@@ -68,6 +68,18 @@ public class CategoryServiceImpl implements CategoryService {
         categoryMapper.updateCategoryById(category);
     }
 
+    /**
+     * 根据文章id删除文章分类
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public void deleteCategoryById(Integer id) {
+
+        categoryMapper.deleteCategoryById(id);
+    }
+
 
     //从当前线程中获取已存储的载荷
     private Map<String, Object> getClams() {

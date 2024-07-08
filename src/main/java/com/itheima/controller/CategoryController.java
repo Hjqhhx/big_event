@@ -77,4 +77,18 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 根据文章id删除文章分类
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    @Operation(summary = "删除文章分类")
+    public Result deleteCategoryById(Integer id) {
+
+        categoryService.deleteCategoryById(id);
+        return Result.success();
+    }
+
 }
