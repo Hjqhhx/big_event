@@ -5,4 +5,13 @@
 <mapper namespace="com.itheima.mapper.ArticleMapper">
 
 
+    <select id="listQuery" resultType="com.itheima.pojo.Article">
+        select * from article
+        <where>
+            <if test="categoryId != null">category_id = #{categoryId}</if>
+            <if test="state !=null and state !='' ">and state = #{state}</if>
+            <if test="createId">and create_user = #{createId}</if>
+        </where>
+
+    </select>
 </mapper>

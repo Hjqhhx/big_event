@@ -1,18 +1,16 @@
 package com.itheima.controller;
 
 import com.itheima.pojo.Article;
+import com.itheima.pojo.PageQuery;
+import com.itheima.pojo.PageBean;
 import com.itheima.pojo.Result;
 import com.itheima.service.ArticleService;
-import com.itheima.utils.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/article")
@@ -23,6 +21,12 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    /**
+     * 新增文章
+     *
+     * @param article
+     * @return
+     */
     @PostMapping
     @Operation(summary = "新增文章")
     public Result insertArticle(@RequestBody @Validated Article article) {
@@ -31,18 +35,19 @@ public class ArticleController {
         return Result.success();
     }
 
-    @GetMapping("/list")
-    public Result<String> list(@RequestHeader(name = "Authorization") String token, HttpServletResponse response) {
+    /**
+     * 条件分页查询文章
+     *
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping
+    @Operation(summary = "条件分页查询")
+    public Result<PageBean<Article>> list(PageQuery pageQuery) {
 
-        try {
-            Map<String, Object> stringObjectMap = JwtUtil.parseToken(token);
-            return Result.success("分页查询成功");
+        log.info("PageQuery:{}", pageQuery);
+        PageBean<Article> pageBean = articleService.listQuery(pageQuery);
 
-        } catch (Exception e) {
-            response.setStatus(401);
-            return Result.error("未登录");
-        }
-
-
+        return Result.success(pageBean);
     }
 }
