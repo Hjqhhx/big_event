@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -113,18 +114,44 @@ public class UserController {
 
     /**
      * 跟新用户头像
+     *
      * @param avatarUrl
      * @return
      */
     @PatchMapping("/updateAvatar")
     @Operation(summary = "跟新用户头像接口")
-    public Result updateUserAvatar(@RequestParam String avatarUrl) {
+    public Result updateUserAvatar(@RequestParam @URL String avatarUrl) {
 
         userService.updateUserAvater(avatarUrl);
-
         return Result.success();
 
     }
 
+    /**
+     * 修改用户密码接口
+     *
+     * @param params
+     * @return
+     */
+    @PatchMapping("/updatePwd")
+    @Operation(summary = "跟新用户密码接口")
+    public Result updateUserPwd(@RequestBody Map<String, String> params) {
 
+        //从线程中获取当前用户的信息
+        Map<String, Object> clams = ThreadLocalUtil.get();
+        String username = (String) clams.get("username");
+        Integer id = (Integer) clams.get("id");
+
+        //将原始密码与原来的密码进行对比
+        User user = userService.findByUserName(username);
+        String password = user.getPassword();
+        String oldPwd = params.get("old_pwd");
+        if (!password.equals(DigestUtil.md5Hex(oldPwd))) {
+            return Result.error("原密码不对");
+        }
+
+        userService.updateUserPwd(params,id);
+
+        return Result.success();
+    }
 }

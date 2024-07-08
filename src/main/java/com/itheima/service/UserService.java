@@ -3,6 +3,8 @@ package com.itheima.service;
 import com.itheima.pojo.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 
 public interface UserService {
     /**
@@ -33,4 +35,10 @@ public interface UserService {
      * @return
      */
     void updateUserAvater(String avatarUrl);
+
+    /**
+     * 修改用户密码
+     * @param params
+     */
+    void updateUserPwd(Map<String, String> params,Integer id);
 }

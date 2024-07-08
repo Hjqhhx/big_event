@@ -81,4 +81,22 @@ public class UserServiceImpl implements UserService {
 
         userMapper.updateById(user);
     }
+
+    /**
+     * 修改用户密码
+     *
+     * @param params
+     */
+    @Override
+    public void updateUserPwd(Map<String, String> params, Integer id) {
+
+
+        User user = new User();
+        user.setId(id);
+        user.setPassword(DigestUtil.md5Hex(params.get("new_pwd")));
+        user.setUpdateTime(LocalDateTime.now());
+        userMapper.updateById(user);
+
+
+    }
 }

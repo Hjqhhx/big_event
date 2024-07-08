@@ -10,6 +10,7 @@
             <if test="nickname != null and nickname !='' ">nickname=#{nickname},</if>
             <if test="email != null and email !='' ">email=#{email},</if>
             <if test="userPic != null and userPic !='' ">user_pic=#{userPic},</if>
+            <if test="password !=null and password !='' ">password=#{password},</if>
             <if test="updateTime != null">update_time=#{updateTime},</if>
         </set>
         where id = #{id}
