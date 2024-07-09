@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: local
   #MySQL数据库的连接信息
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -42,7 +44,7 @@ mybatis:
 # Alioss配置
 aliyun:
   oss:
-    access-key-id: LTAI5t7MqF74rAfGtzw5LJxW
-    ENDPOINT: https://oss-cn-hangzhou.aliyuncs.com
-    bucket-name: web-mytails01
-    secret-access-key: qJoHgzHdh7ElwbSANjpgRLkPtylpDf
+    access-key-id: ${aliyun.oss.access-key-id}
+    ENDPOINT: ${aliyun.oss.ENDPOINT}
+    bucket-name: ${aliyun.oss.bucket-name}
+    secret-access-key: ${aliyun.oss.secret-access-key}
