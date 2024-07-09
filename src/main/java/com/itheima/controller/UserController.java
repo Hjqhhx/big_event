@@ -84,6 +84,8 @@ public class UserController {
             //把token存储到redis中
             stringRedisTemplate.opsForValue().set(token, token, 24, TimeUnit.HOURS);
             return Result.success(token);
+
+
         }
         return Result.error("密码错误，请重新输入");
     }
