@@ -1,9 +1,17 @@
 spring:
+  #MySQL数据库的连接信息
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/big_event
     username: root
     password: 1234
+  #redis的连接信息
+  data:
+    redis:
+      host: localhost #连接地址
+      port: 6379
+
+
 
 #日志级别
 logging:

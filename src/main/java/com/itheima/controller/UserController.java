@@ -14,11 +14,13 @@ import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -29,6 +31,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 用户注册
@@ -71,11 +75,14 @@ public class UserController {
         User loginUser = userService.findByUserName(username);
         if (ObjectUtil.isEmpty(loginUser)) return Result.error("用户不存在，请注册");
 
+        //给该用户返回token令牌
         if (loginUser.getPassword().equals(DigestUtil.md5Hex(password))) {
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", loginUser.getId());
             claims.put("username", loginUser.getUsername());
             String token = JwtUtil.genToken(claims);
+            //把token存储到redis中
+            stringRedisTemplate.opsForValue().set(token, token, 24, TimeUnit.HOURS);
             return Result.success(token);
         }
         return Result.error("密码错误，请重新输入");
@@ -136,7 +143,7 @@ public class UserController {
      */
     @PatchMapping("/updatePwd")
     @Operation(summary = "跟新用户密码接口")
-    public Result updateUserPwd(@RequestBody Map<String, String> params) {
+    public Result updateUserPwd(@RequestBody Map<String, String> params, @RequestHeader("Authorization") String token) {
 
         //获取参数信息
         String oldPwd = params.get("old_pwd");
@@ -165,7 +172,9 @@ public class UserController {
         }
 
         userService.updateUserPwd(params, id);
-
+        //删除redis中对应的token
+        System.out.println(token);
+        stringRedisTemplate.opsForValue().getOperations().delete(token);
         return Result.success();
     }
 }

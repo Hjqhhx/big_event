@@ -37,6 +37,7 @@ public interface UserMapper {
      *
      * @param user
      */
-    @AutoFill(value = OperationType.UPDATE) //标记该方法是更新操作，需要进行Before赋值
+    @AutoFill(value = OperationType.UPDATE)
+    //标记该方法是更新操作，需要进行Before赋值
     void updateById(User user);
 }
